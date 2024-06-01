@@ -1,5 +1,3 @@
-// ./src/api/video/controllers/video.js
-
 const ffmpeg = require('fluent-ffmpeg');
 const path = require('path');
 const fs = require('fs');
@@ -40,30 +38,48 @@ module.exports = {
 
       ffmpeg(inputPath)
         .output(outputPath)
+        .outputOptions('-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2')  // Adjust resolution to be even
         .on('end', async () => {
           ffmpeg(outputPath)
             .screenshots({
-              count: 1,
+              timestamps: ['00:00:01.000'],
+              filename: `${file.hash}.png`,
               folder: path.dirname(thumbnailPath),
-              filename: path.basename(thumbnailPath),
               size: '320x240'
+            })
+            .on('end', async () => {
+
+              const stats = fs.statSync(outputPath);
+              const dimensions = await new Promise((resolve, reject) => {
+                ffmpeg.ffprobe(outputPath, (err, metadata) => {
+                  if (err) reject(err);
+                  resolve(metadata.streams[0]);
+                });
+              });
+
+              const updatedFile = await strapi.entityService.update('plugin::upload.file', id, {
+                data: {
+                  url: `/converted/${outputFileName}`,
+                  caption: `/thumbnails/${file.hash}.png`,
+                  size: stats.size / 1024, // size in KB
+                  width: dimensions.width,
+                  height: dimensions.height
+                }
+              });
+
+              ctx.send({
+                message: 'File converted and thumbnail generated',
+                file: updatedFile
+              });
+            })
+            .on('error', (err) => {
+              strapi.log.error(`Error generating thumbnail for file ${file.name}: ${err.message}`);
+              ctx.throw(500, `Error generating thumbnail: ${err.message}`);
             });
-
-          const updatedFile = await strapi.entityService.update('plugin::upload.file', id, {
-            data: {
-              url: `/converted/${outputFileName}`,
-              caption: `/thumbnails/${file.hash}.png`
-            }
-          });
-
-          ctx.send({
-            message: 'File converted and thumbnail generated',
-            file: updatedFile
-          });
         })
         .on('error', (err) => {
           strapi.log.error(`Error converting file ${file.name}: ${err.message}`);
-          ctx.throw(500, 'Error converting file');
+          ctx.throw(500, `Error converting file: ${err.message}`);
         })
         .run();
     } catch (error) {
@@ -73,7 +89,7 @@ module.exports = {
 };
 
 
-
+// // ./src/api/video/controllers/video.js
 
 // const ffmpeg = require('fluent-ffmpeg');
 // const path = require('path');
@@ -115,36 +131,30 @@ module.exports = {
 
 //       ffmpeg(inputPath)
 //         .output(outputPath)
-//         .outputOptions('-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2')  // Adjust resolution to be even
 //         .on('end', async () => {
 //           ffmpeg(outputPath)
 //             .screenshots({
-//               timestamps: ['00:00:01.000'],
-//               filename: `${file.hash}.png`,
+//               count: 1,
 //               folder: path.dirname(thumbnailPath),
+//               filename: path.basename(thumbnailPath),
 //               size: '320x240'
-//             })
-//             .on('end', async () => {
-//               const updatedFile = await strapi.entityService.update('plugin::upload.file', id, {
-//                 data: {
-//                   convertedUrl: `/converted/${outputFileName}`,
-//                   thumbnail: `/thumbnails/${file.hash}.png`
-//                 }
-//               });
-
-//               ctx.send({
-//                 message: 'File converted and thumbnail generated',
-//                 file: updatedFile
-//               });
-//             })
-//             .on('error', (err) => {
-//               strapi.log.error(`Error generating thumbnail for file ${file.name}: ${err.message}`);
-//               ctx.throw(500, `Error generating thumbnail: ${err.message}`);
 //             });
+
+//           const updatedFile = await strapi.entityService.update('plugin::upload.file', id, {
+//             data: {
+//               url: `/converted/${outputFileName}`,
+//               caption: `/thumbnails/${file.hash}.png`
+//             }
+//           });
+
+//           ctx.send({
+//             message: 'File converted and thumbnail generated',
+//             file: updatedFile
+//           });
 //         })
 //         .on('error', (err) => {
 //           strapi.log.error(`Error converting file ${file.name}: ${err.message}`);
-//           ctx.throw(500, `Error converting file: ${err.message}`);
+//           ctx.throw(500, 'Error converting file');
 //         })
 //         .run();
 //     } catch (error) {
