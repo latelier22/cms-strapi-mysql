@@ -63,7 +63,21 @@ module.exports = {
                   caption: `/thumbnails/${file.hash}.png`,
                   size: stats.size / 1024, // size in KB
                   width: dimensions.width,
-                  height: dimensions.height
+                  height: dimensions.height,
+                  formats: {
+                    ...((file.formats && typeof file.formats === 'object') ? file.formats : {}),
+                    thumbnail: {
+                      name: `${file.hash}.png`,
+                      hash: file.hash,
+                      ext: '.png',
+                      mime: 'image/png',
+                      path: null,
+                      width: 320,
+                      height: 240,
+                      size: fs.statSync(thumbnailPath).size / 1024, // size in KB
+                      url: `/thumbnails/${file.hash}.png`,
+                    }
+                  },
                 }
               });
 
