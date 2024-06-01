@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pictures",
+  "info": {
+    "singularName": "picture",
+    "pluralName": "pictures",
+    "displayName": "Pictures",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "imported": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "photoId": {
+      "type": "integer",
+      "required": true
+    },
+    "fileId": {
+      "type": "integer",
+      "required": true
+    },
+    "importedAt": {
+      "type": "datetime"
+    },
+    "uploadedAt": {
+      "type": "datetime"
+    },
+    "posts": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::post.post",
+      "inversedBy": "pictures"
+    }
+  }
+}

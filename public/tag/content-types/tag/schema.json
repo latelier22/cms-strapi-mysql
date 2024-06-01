@@ -1,0 +1,34 @@
+{
+    "kind": "collectionType",
+    "collectionName": "tags",
+    "info": {
+      "singularName": "tag",
+      "pluralName": "tags",
+      "displayName": "Tag"
+    },
+    "options": {
+      "increments": true,
+      "timestamps": true
+    },
+    "attributes": {
+      "name": {
+        "type": "string",
+        "unique": true,
+        "required": true
+      },
+      "slug": {
+        "type": "string",
+        "required": true
+      },
+      "mainTag": {
+        "type": "boolean",
+        "default": false
+      },
+      "parent_id": {
+        "model": "tag",
+        "via": "id",
+        "column": "parent_id"
+      }
+    }
+  }
+  

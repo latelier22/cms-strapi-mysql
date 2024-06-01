@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tags",
+  "info": {
+    "singularName": "tag",
+    "pluralName": "tags",
+    "displayName": "Tags",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "required": true
+    },
+    "mainTag": {
+      "type": "boolean",
+      "default": false
+    },
+    "parent_id": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tag.tag",
+      "targetAttribute": "id"
+    }
+  }
+}

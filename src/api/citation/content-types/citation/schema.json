@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "citations",
+  "info": {
+    "singularName": "citation",
+    "pluralName": "citations",
+    "displayName": "Citations",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "texte": {
+      "type": "text"
+    },
+    "auteur": {
+      "type": "string",
+      "required": true
+    },
+    "etat": {
+      "type": "enumeration",
+      "enum": [
+        "brouillon",
+        "publiée"
+      ],
+      "required": true,
+      "default": "brouillon"
+    },
+    "parentCitationId": {
+      "type": "integer"
+    },
+    "photoId": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "imageUrl": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "order": {
+      "type": "integer"
+    }
+  }
+}

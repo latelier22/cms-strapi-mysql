@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_com_commentaires",
+  "info": {
+    "displayName": "Commentaires",
+    "icon": "discuss"
+  },
+  "options": {},
+  "attributes": {
+    "auteur": {
+      "type": "string",
+      "required": true
+    },
+    "texte": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

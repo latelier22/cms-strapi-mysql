@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "comments",
+  "info": {
+    "singularName": "comment",
+    "pluralName": "comments",
+    "displayName": "Comments",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "texte": {
+      "type": "text",
+      "required": true
+    },
+    "auteur": {
+      "type": "string",
+      "required": true
+    },
+    "etat": {
+      "type": "enumeration",
+      "enum": [
+        "à valider",
+        "validée"
+      ],
+      "required": true,
+      "default": "à valider"
+    },
+    "post": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::post.post",
+      "inversedBy": "comments"
+    },
+    "child_comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "parent_comment"
+    },
+    "parent_comment": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::comment.comment",
+      "inversedBy": "child_comments"
+    }
+  }
+}
