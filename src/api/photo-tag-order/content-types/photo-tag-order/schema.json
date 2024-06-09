@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "photo_tag_orders",
+  "info": {
+    "singularName": "photo-tag-order",
+    "pluralName": "photo-tag-orders",
+    "displayName": "PhotoTagOrder"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "tagId": {
+      "type": "integer"
+    },
+    "photoId": {
+      "type": "integer"
+    },
+    "order": {
+      "type": "integer"
+    }
+  }
+}

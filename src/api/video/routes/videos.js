@@ -9,6 +9,7 @@ module.exports = {
         config: {
           auth: false,
         },
+        
       },
       {
         method: 'GET',
@@ -18,6 +19,17 @@ module.exports = {
           auth: false,
         },
       },
+      {
+        method: 'GET',
+        path: '/video/:id',
+        handler: 'api::video.video.one',
+        config: {
+          auth: false,
+        },
+      },
+
+
     ],
+    
   };
   

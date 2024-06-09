@@ -1017,6 +1017,37 @@ export interface ApiMenuMenu extends Schema.CollectionType {
   };
 }
 
+export interface ApiPhotoTagOrderPhotoTagOrder extends Schema.CollectionType {
+  collectionName: 'photo_tag_orders';
+  info: {
+    singularName: 'photo-tag-order';
+    pluralName: 'photo-tag-orders';
+    displayName: 'PhotoTagOrder';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    tagId: Attribute.Integer;
+    photoId: Attribute.Integer;
+    order: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::photo-tag-order.photo-tag-order',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::photo-tag-order.photo-tag-order',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiPicturePicture extends Schema.CollectionType {
   collectionName: 'pictures';
   info: {
@@ -1088,6 +1119,7 @@ export interface ApiPostPost extends Schema.CollectionType {
       'manyToMany',
       'api::picture.picture'
     >;
+    slug: Attribute.String & Attribute.Required & Attribute.Unique;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1147,6 +1179,7 @@ declare module '@strapi/types' {
       'api::citation.citation': ApiCitationCitation;
       'api::comment.comment': ApiCommentComment;
       'api::menu.menu': ApiMenuMenu;
+      'api::photo-tag-order.photo-tag-order': ApiPhotoTagOrderPhotoTagOrder;
       'api::picture.picture': ApiPicturePicture;
       'api::post.post': ApiPostPost;
       'api::tag.tag': ApiTagTag;

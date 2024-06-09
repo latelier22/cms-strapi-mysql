@@ -54,6 +54,11 @@
       "relation": "manyToMany",
       "target": "api::picture.picture",
       "mappedBy": "posts"
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
     }
   }
 }
